@@ -1,0 +1,108 @@
+<%- include('header') -%>
+<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+  <ul class="navbar-nav ms-auto">
+    <!-- <li class="nav-item">
+      <a class="nav-link" href="#title">Giới thiệu</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#category">Danh mục</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#footer">Contact</a>
+    </li> -->
+    <% if (session === 1) { %>
+      <div class="dropdown">
+        <!-- <a class="btn btn-outline-primary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fa-regular fa-user fa-lg"></i>
+            <p></p>
+        </a> -->
+
+        <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="fa-regular fa-user fa-lg"></i> <%=userSession.fullName %>
+        </button>
+
+        <ul class="dropdown-menu">
+          <% if (userSession.admin === false) { %>
+            <li><a class="dropdown-item" href="/users/dashboard">Dashboard</a></li>
+            <li><a class="dropdown-item" href="/users/log-out">Đăng xuất</a></li>
+          <%} else { %>
+            <li><a class="dropdown-item" href="/admin/dashboard">Dashboard</a></li>
+            <li><a class="dropdown-item" href="/admin/log-out">Đăng xuất</a></li>
+          <%}%>
+        </ul>
+      </div>
+    <% } else { %>
+      <li class="nav-item">
+        <a class="nav-link" href="/users/sign-in">Đăng nhập</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/users/sign-up">Đăng ký</a>
+      </li>
+    <% } %>
+  </ul>
+</div>
+</nav>
+
+<!-- Title -->
+</section>
+
+<section id="title">
+  <div class="row title-content">
+    <div class="col-lg-6 col-sm-12">
+      <h1 class="intro-title">Giới thiệu công trình thanh niên</h1>
+      <p class="intro-content">Công trình thanh niên mang tên <strong>"Thư viện trực tuyến - Mở mang tri thức"</strong>
+        được thực hiện bởi Chi Đoàn 21CTT2 thuộc Đoàn Khoa Công Nghệ Thông Tin, Trường Đại học Khoa Học Tự Nhiên,
+        ĐHQG-HCM nhiệm kỳ 2022 - 2023. Chi Đoàn hy vọng các bạn Đoàn viên có thể đóng góp một phần để công trình thanh
+        niên được thành công tốt đẹp. BCH Chi đoàn cảm ơn các bạn rất nhiều.
+      </p>
+    </div>
+    <div class="col-lg-6 col-sm-12">
+      <img class="title-img" src="img/Bookshelf.png" alt="book">
+    </div>
+  </div>
+  </div>
+
+  <!-- Danh mục -->
+
+  <section id="category">
+    <h1 class="cate-title">Danh mục tài liệu</h1>
+    <div class="row">
+      <div class="col-lg-4 col-md-6">
+        <div class="card h-100">
+          <img src="/img/item1.png" class="card-img-top" alt="cosonganh">
+          <div class="card-body">
+            <p class="card-text">Tài liệu cơ sở ngành gồm các môn như: Nhập môn lập trình, Kỹ thuật lập trình, Cấu trúc
+              dữ liệu và giải thuật, ...</p>
+          </div>
+          <div class="card-footer text-center">
+            <a href="/category/csn" class="btn btn-outline-primary">Xem đầy đủ</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4 col-md-6">
+        <div class="card h-100">
+          <img src="/img/item2.png" class="card-img-top" alt="daicuong">
+          <div class="card-body">
+            <p class="card-text">Tài liệu đại cương gồm các môn như: Toán rời rạc, Đại số tuyến tính, Toán học tổ hợp,
+              Vật lý đại cương 1, Vật lý đại cương 2, Toán ứng dụng và thống kê, ...</p>
+          </div>
+          <div class="card-footer text-center">
+            <a href="/category/tldc" class="btn btn-outline-primary">Xem đầy đủ</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4 col-md-6 cate-card">
+        <div class="card h-100">
+          <img src="/img/item3.png" class="card-img-top" alt="tailieukhac">
+          <div class="card-body">
+            <p class="card-text">Tài liệu khác như: Toeic, Ielts, ...</p>
+          </div>
+          <div class="card-footer text-center">
+            <a href="/category/others" class="btn btn-outline-primary">Xem đầy đủ</a>
+          </div>
+        </div>
+      </div>
+  </section>
+  <%- include('footer') -%>

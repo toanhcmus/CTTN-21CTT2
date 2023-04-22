@@ -1,0 +1,55 @@
+<%- include('header') -%>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/">Trang chủ</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#noidung-csn">Nội dung</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#footer">Contact</a>
+            </li>
+        </ul>
+    </div>
+   </nav>
+  </div>
+</section>
+<section id="cate-content">
+    <h2 class="cate-content-h2">Tài liệu tham khảo <%= title %></h2>
+</section>
+<section id="table-category">
+    <div class="table-responsive">
+        <table class="table table-bordered border-dark-subtle rounded">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Tên sách</th>
+                    <th scope="col">Loại</th>
+                    <th scope="col">Danh mục</th>
+                    <th scope="col">Link</th>
+                    <th scope="col">Ngày tải</th>
+                    <th scope="col">Người tải</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% 
+                    var count = 0;
+                    foundBooks.forEach(function(item){ 
+                        count = count + 1;
+                %>
+                <tr>
+                    <th scope="row"><%= count %></th>
+                    <td><%= item.title %></td>
+                    <td><%= item.type %></td>
+                    <td><%= item.category %></td>
+                    <td><a href = "<%= item.link %>" target="_blank">Link</a></td>
+                    <td><%= item.uploadDate %></td>
+                    <td><%= item.userID %></td>
+                </tr>
+                <% }); %>
+              </tbody>
+        </table>
+    </div>
+</section>
+<%- include('category/footer') -%>

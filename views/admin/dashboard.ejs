@@ -1,0 +1,280 @@
+<%- include('../header') -%>
+  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    <ul class="navbar-nav ms-auto">
+        <div class="dropdown">
+          <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fa-regular fa-user fa-lg"></i> Admin
+          </button>
+  
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/admin/dashboard">Dashboard</a></li>
+            <li><a class="dropdown-item" href="/admin/log-out">Đăng xuất</a></li>
+          </ul>
+        </div>
+    </ul>
+  </div>
+  </nav>
+</section>
+
+  <div class="card border-primary mb-3 info-card">
+    <div class="card-header text-center"><strong>THÔNG TIN VỀ TÀI LIỆU </strong></div>
+    <div class="card-body text-primary">
+        <div class="container">
+            <div class="row">
+                <div class="col-4">Số lượng tài liệu bạn đã tải lên </div>
+                <div class="col-8" style="color:brown; text-decoration: solid;"><strong><%= foundBooks.length %></strong></div>
+            </div>
+
+            <div class="row">
+                <div class="col-4">Số lượng tài liệu đã được duyệt </div>
+                <% var countTrue = 0;
+                   foundBooks.forEach(function(item){ 
+                        if (item.statusBook === "True") {
+                          countTrue = countTrue + 1;
+                        }
+                      });
+                %>
+                <div class="col-8" style="color:brown; text-decoration: solid;"><strong><%= countTrue %></strong></div>
+            </div>
+
+            <div class="row">
+              <div class="col-4">Số lượng tài liệu cơ sở ngành </div>
+              <% var countCSN = 0;
+                 foundBooks.forEach(function(item){ 
+                      if (item.category === "Cơ sở ngành") {
+                        countCSN = countCSN + 1;
+                      }
+                    });
+              %>
+              <div class="col-8" style="color:brown; text-decoration: solid;"><strong><%= countCSN %></strong></div>
+            </div>
+
+            <div class="row">
+              <div class="col-4">Số lượng tài liệu đại cương </div>
+              <% var countDC = 0;
+                 foundBooks.forEach(function(item){ 
+                      if (item.category === "Đại cương") {
+                        countDC = countDC + 1;
+                      }
+                    });
+              %>
+              <div class="col-8" style="color:brown; text-decoration: solid;"><strong><%= countDC %></strong></div>
+            </div>
+
+            <div class="row">
+              <div class="col-4">Số lượng tài liệu khác </div>
+              <% var countOthers = 0;
+                 foundBooks.forEach(function(item){ 
+                      if (item.category === "Khác") {
+                        countOthers = countOthers + 1;
+                      }
+                    });
+              %>
+              <div class="col-8" style="color:brown; text-decoration: solid;"><strong><%= countOthers %></strong></div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <!-- DANH SÁCH TÀI LIỆU ĐÃ TẢI LÊN -->
+  <div class="card border-primary mb-3 info-card">
+    <div class="card-header text-center"><strong>DANH SÁCH TÀI LIỆU ĐÃ TẢI LÊN</strong></div>
+    <div class="card-body text-primary">
+        <div class="table-responsive">
+        <table class="table table-bordered border-dark-subtle rounded">
+             <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Tên sách</th>
+                  <th scope="col">Loại</th>
+                  <th scope="col">Danh mục</th>
+                  <th scope="col">Link</th>
+                  <th scope="col">Ngày tải</th>
+                  <th scope="col">Trạng thái</th>
+                  <th scope="col">Duyệt</th>
+                  <th scope="col">Xóa</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% 
+                    var count = 0;
+                    foundBooks.forEach(function(item){ 
+                        count = count + 1;
+                %>
+                <tr>
+                    <th scope="row"><%= count %></th>
+                    <td><%= item.title %></td>
+                    <td><%= item.type %></td>
+                    <td><%= item.category %></td>
+                    <td><a href = "<%= item.link %>" target="_blank">Link</a></td>
+                    <td><%= item.uploadDate %></td>
+                    <% if (item.statusBook === "True") { %>
+                        <td colspan="2"><strong>Đã duyệt</strong></td>
+                        <td>
+                          <form action="/admin/deleteBook/<%= item.id %>" method="post">
+                              <button class="btn btn-primary" type="submit">Xóa</button>
+                          </form> 
+                        </td>
+                    <% } else if (item.statusBook === "False") { %>
+                        <td>Chưa duyệt</td>
+                        <td>
+                          <form action="/admin/verifyBook/<%= item.id %>" method="post">
+                              <button class="btn btn-primary" type="submit">Duyệt</button>
+                          </form> 
+                        </td>
+                        <td>
+                          <form action="/admin/deleteBook/<%= item.id %>" method="post">
+                              <button class="btn btn-primary" type="submit">Xóa</button>
+                          </form> 
+                        </td>
+                </tr>
+                <% } }); %>
+              </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="card border-primary mb-3 info-card">
+    <div class="card-header text-center"><strong>DANH SÁCH TÀI LIỆU CƠ SỞ NGÀNH</strong></div>
+    <div class="card-body text-primary">
+        <div class="table-responsive">
+        <table class="table table-bordered border-dark-subtle rounded">
+             <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Tên sách</th>
+                  <th scope="col">Loại</th>
+                  <th scope="col">Danh mục</th>
+                  <th scope="col">Link</th>
+                  <th scope="col">Ngày tải</th>
+                  <th scope="col">Trạng thái</th>
+                  <th scope="col">Người tải</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% 
+                    var count = 0;
+                    foundBooks.forEach(function(item){ 
+                      if (item.category === "Cơ sở ngành"){
+                        count = count + 1;
+                %>
+                <tr>
+                    <th scope="row"><%= count %></th>
+                    <td><%= item.title %></td>
+                    <td><%= item.type %></td>
+                    <td><%= item.category %></td>
+                    <td><a href = "<%= item.link %>" target="_blank">Link</a></td>
+                    <td><%= item.uploadDate %></td>
+                    <% if (item.statusBook === "True") { %>
+                        <td><strong>Đã duyệt</strong></td>
+                    <% } else if (item.statusBook === "False") { %>
+                        <td>Chưa duyệt</td>
+                    <% } %>
+                    <td><%= item.userID %></td>
+                </tr>
+                <% }}); %>
+              </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="card border-primary mb-3 info-card">
+    <div class="card-header text-center"><strong>DANH SÁCH TÀI LIỆU ĐẠI CƯƠNG</strong></div>
+    <div class="card-body text-primary">
+        <div class="table-responsive">
+        <table class="table table-bordered border-dark-subtle rounded">
+             <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Tên sách</th>
+                  <th scope="col">Loại</th>
+                  <th scope="col">Danh mục</th>
+                  <th scope="col">Link</th>
+                  <th scope="col">Ngày tải</th>
+                  <th scope="col">Trạng thái</th>
+                  <th scope="col">Người tải</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% 
+                    var count = 0;
+                    foundBooks.forEach(function(item){ 
+                      if (item.category === "Đại cương"){
+                        count = count + 1;
+                %>
+                <tr>
+                    <th scope="row"><%= count %></th>
+                    <td><%= item.title %></td>
+                    <td><%= item.type %></td>
+                    <td><%= item.category %></td>
+                    <td><a href = "<%= item.link %>" target="_blank">Link</a></td>
+                    <td><%= item.uploadDate %></td>
+                    <% if (item.statusBook === "True") { %>
+                        <td><strong>Đã duyệt</strong></td>
+                    <% } else if (item.statusBook === "False") { %>
+                        <td>Chưa duyệt</td>
+                    <% } %>
+                    <td><%= item.userID %></td>
+                </tr>
+                <% }}); %>
+              </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="card border-primary mb-3 info-card">
+    <div class="card-header text-center"><strong>DANH SÁCH TÀI LIỆU KHÁC</strong></div>
+    <div class="card-body text-primary">
+        <div class="table-responsive">
+        <table class="table table-bordered border-dark-subtle rounded">
+             <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Tên sách</th>
+                  <th scope="col">Loại</th>
+                  <th scope="col">Danh mục</th>
+                  <th scope="col">Link</th>
+                  <th scope="col">Ngày tải</th>
+                  <th scope="col">Trạng thái</th>
+                  <th scope="col">Người tải</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% 
+                    var count = 0;
+                    foundBooks.forEach(function(item){ 
+                      if (item.category === "Khác"){
+                        count = count + 1;
+                %>
+                <tr>
+                    <th scope="row"><%= count %></th>
+                    <td><%= item.title %></td>
+                    <td><%= item.type %></td>
+                    <td><%= item.category %></td>
+                    <td><a href = "<%= item.link %>" target="_blank">Link</a></td>
+                    <td><%= item.uploadDate %></td>
+                    <% if (item.statusBook === "True") { %>
+                        <td><strong>Đã duyệt</strong></td>
+                    <% } else if (item.statusBook === "False") { %>
+                        <td>Chưa duyệt</td>
+                    <% } %>
+                    <td><%= item.userID %></td>
+                </tr>
+                <% }}); %>
+              </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+  <script src="index.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" 
+  integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+
+</body>
+
+</html>
