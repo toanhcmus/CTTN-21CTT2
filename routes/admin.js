@@ -102,7 +102,7 @@ router.post('/deleteBook/:id', ensureAuthenticatedAdmin, function(req, res) {
   const id = req.params.id;
   Book.findByIdAndRemove(id)
   .then(function () {
-    console.log("Successfully deleted book");
+    //console.log("Successfully deleted book");
     res.redirect("/admin/dashboard");
   })
   .catch(function (err) {

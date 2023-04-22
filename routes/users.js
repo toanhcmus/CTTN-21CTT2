@@ -111,7 +111,7 @@ const { ensureAuthenticatedUser, forwardAuthenticatedUser } = require('../config
 
     Book.create(addedBook)
     .then(function () {
-      console.log("Successfully saved book to DB");
+      //console.log("Successfully saved book to DB");
       res.redirect("/users/dashboard");
     })
     .catch(function (err) {
