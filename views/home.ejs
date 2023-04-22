@@ -1,22 +1,8 @@
 <%- include('header') -%>
 <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
   <ul class="navbar-nav ms-auto">
-    <!-- <li class="nav-item">
-      <a class="nav-link" href="#title">Giới thiệu</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#category">Danh mục</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#footer">Contact</a>
-    </li> -->
     <% if (session === 1) { %>
       <div class="dropdown">
-        <!-- <a class="btn btn-outline-primary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="fa-regular fa-user fa-lg"></i>
-            <p></p>
-        </a> -->
-
         <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
           <i class="fa-regular fa-user fa-lg"></i> <%=userSession.fullName %>
         </button>
@@ -61,8 +47,6 @@
     </div>
   </div>
   </div>
-
-  <!-- Danh mục -->
 
   <section id="category">
     <h1 class="cate-title">Danh mục tài liệu</h1>
