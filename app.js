@@ -2,13 +2,10 @@
 require('dotenv').config();
 const express = require("express");
 const bodyParser = require("body-parser");
-// const ejs = require("ejs");
 const mongoose = require("mongoose");
 const _ = require("lodash");
 const session = require("express-session");
 const passport = require("passport");
-// const passportLocalMongoose = require("passport-local-mongoose");
-// const localStrategy	= require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
 const flash = require('connect-flash');
 
@@ -38,7 +35,6 @@ main().catch(err => console.log(err));
 
 async function main() {
       await mongoose.connect(process.env.DB_URL, {useNewUrlParser: true});
-      // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
 }
 
 // Global variables
