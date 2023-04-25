@@ -124,7 +124,7 @@ const { ensureAuthenticatedUser, forwardAuthenticatedUser } = require('../config
     const user = req.user;
     Book.find({userID: user.username})
     .then(function (foundBooks) {
-      if (foundBooks) {
+      if (foundBooks.length != 0) {
           res.render("student/dashboard", {foundUser: user, foundBooks: foundBooks});
       }
     })

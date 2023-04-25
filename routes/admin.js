@@ -71,8 +71,8 @@ const {ensureAuthenticatedAdmin, forwardAuthenticatedAdmin } = require('../confi
   router.get('/dashboard', ensureAuthenticatedAdmin, function(req, res) {
     Book.find({})
     .then(function (foundBooks) {
-      if (foundBooks.length != 0) {
-          res.render("admin/dashboard", {foundBooks: foundBooks});
+      if (foundBooks) {
+        res.render("admin/dashboard", {foundBooks: foundBooks});
       }
     })
     .catch(function (err) {

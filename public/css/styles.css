@@ -1,4 +1,3 @@
-
   body {
     font-family: 'Montserrat', sans-serif;
   }
@@ -38,6 +37,8 @@
     background-color: #62CDFF;
     color: #fff;
     padding: 0% 10% 0% 10%;
+    height: 10%;
+    width: 100%;
   }
 
 
@@ -88,17 +89,15 @@
     width: 80%;
   }
   
-  .title-img-container {
-    position: relative;
-  }
-  
   /* Category */
+  main {
+    min-height: 85vh;
+  }
+
   #category {
-    padding: 5% 10%;
+    padding: 5% 10% 5% 10%;
     background-color: #b5e1f5;
     color: #fff;
-    position: relative;
-    z-index: 1;
   }
   
   .card-text {
@@ -106,7 +105,13 @@
   }
 
   #table-category {
-    padding: 2% 10%;
+    padding: 2% 10% 0 10%;
+  }
+
+  @media (max-width: 1028px) {
+    #table-category {
+      padding-bottom: 50%;
+    }
   }
 
   #cate-content {
@@ -131,7 +136,9 @@
   }
   
   .icon-footer {
-    margin: 3% 2% 5% 0;
+    text-align: center;
+    padding-top: 2%;
+    margin: 0% 2% 3% 1%;
   }
   
   .icon-footer:hover{
@@ -140,6 +147,7 @@
   }
   .copyright {
     font-size: 1rem;
+    padding-bottom: 0;
   }
 
   #footer-cate {
@@ -147,9 +155,10 @@
     color: #fff;
     text-align: center;
     padding: 1% 3% 1% 3%;
-    bottom: 0;
-    position: absolute; 
     width: 100%;
+    bottom: 0;
+    position: fixed;
+    z-index: 1;
   }
   
   /*Post document*/
