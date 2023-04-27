@@ -1,11 +1,9 @@
 module.exports = {
     ensureAuthenticatedUser: function(req, res, next) {
-      console.log(req.user);
       const checkAdmin = req.user.admin;
 
       if (req.isAuthenticated()) {
         if (checkAdmin === false) {
-          console.log("oke");
             return next();
         }
       }
