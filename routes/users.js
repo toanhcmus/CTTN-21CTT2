@@ -70,7 +70,7 @@ const { ensureAuthenticatedUser, forwardAuthenticatedUser } = require('../config
                   );
                   res.redirect('/users/sign-in');
                 })
-                .catch(err => console.log(err));
+                .catch(err => res.status(400).send(err));
             });
           });
         }
@@ -115,21 +115,20 @@ const { ensureAuthenticatedUser, forwardAuthenticatedUser } = require('../config
       res.redirect("/users/dashboard");
     })
     .catch(function (err) {
-      console.log(err);
+      res.status(400).send(err);
     });
   });
 
   //DASHBOARD
   router.get('/dashboard', ensureAuthenticatedUser, function(req, res) {
     const user = req.user;
+    console.log(user);
     Book.find({userID: user.username})
     .then(function (foundBooks) {
-      if (foundBooks.length != 0) {
           res.render("student/dashboard", {foundUser: user, foundBooks: foundBooks});
-      }
     })
     .catch(function (err) {
-      console.log(err);
+      res.status(400).send(err);
     });
   });
 

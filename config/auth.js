@@ -1,9 +1,11 @@
 module.exports = {
     ensureAuthenticatedUser: function(req, res, next) {
+      console.log(req.user);
       const checkAdmin = req.user.admin;
 
       if (req.isAuthenticated()) {
         if (checkAdmin === false) {
+          console.log("oke");
             return next();
         }
       }
@@ -17,7 +19,7 @@ module.exports = {
       if (req.user.admin === true) {
         res.render('admin/dashboard');
       } else {
-        res.render('users/dashboard'); 
+        res.render('student/dashboard'); 
       }
     },
     forwardAuthenticatedAdmin: function(req, res, next) {

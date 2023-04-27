@@ -6,7 +6,6 @@ const mongoose = require("mongoose");
 const _ = require("lodash");
 const session = require("express-session");
 const passport = require("passport");
-const bcrypt = require('bcrypt');
 const flash = require('connect-flash');
 
 const app = express();
@@ -21,7 +20,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
 app.use(session({
-  secret: "Our little secret.",
+  secret: process.env.SECRET,
   resave: false,
   saveUninitialized: true,
   cookie: { maxAge: 60 * 60 * 1000 } // 1 hour

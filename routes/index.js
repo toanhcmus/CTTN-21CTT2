@@ -36,7 +36,7 @@ router.get("/category/:title", function(req,res) {
     });
   })
   .catch(function (err) {
-    console.log(err);
+    res.status(400).send(err);
   });
 });
 
