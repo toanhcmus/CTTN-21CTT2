@@ -20,7 +20,7 @@ module.exports = function(passport) {
             username: username
           }).then(user => {
             if (!user) {
-              return done(null, false, { message: 'That username is not registered' });
+              return done(null, false, { message: 'Tài khoản chưa được đăng ký!' });
             }
     
             // Match password
@@ -29,7 +29,7 @@ module.exports = function(passport) {
               if (isMatch) {
                 return done(null, user);
               } else {
-                return done(null, false, { message: 'Password incorrect' });
+                return done(null, false, { message: 'Mật khẩu không đúng!' });
               }
             });
           });
