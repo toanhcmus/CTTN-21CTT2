@@ -19,15 +19,19 @@ const { ensureAuthenticatedUser, forwardAuthenticatedUser } = require('../config
     let errors = [];
   
     if (!fullName || !MSSV || !pword1 || !pword2) {
-      errors.push({ msg: 'Please enter all fields' });
+      errors.push({ msg: 'Vui lòng nhập đầy đủ các trường!' });
     }
   
     if (pword1 != pword2) {
-      errors.push({ msg: 'Passwords do not match' });
+      errors.push({ msg: 'Mật khẩu không khớp!' });
     }
   
-    if (pword1.length < 6) {
-      errors.push({ msg: 'Password must be at least 6 characters' });
+    if (pword1.length < 8) {
+      errors.push({ msg: 'Mật khẩu phải có ít nhất 8 ký tự!' });
+    }
+
+    if (MSSV.length != 8) {
+      errors.push({ msg: 'Mã số sinh viên phải có 8 ký tự!' });
     }
   
     if (errors.length > 0) {
@@ -41,7 +45,7 @@ const { ensureAuthenticatedUser, forwardAuthenticatedUser } = require('../config
     } else {
       User.findOne({ username: MSSV }).then(user => {
         if (user) {
-          errors.push({ msg: 'Username already exists' });
+          errors.push({ msg: 'Tài khoản đã tồn tại' });
           res.render('sign-up', {
             errors,
             fullName,
@@ -66,7 +70,7 @@ const { ensureAuthenticatedUser, forwardAuthenticatedUser } = require('../config
                 .then(user => {
                   req.flash(
                     'success_msg',
-                    'You are now registered and can log in'
+                    'Bạn đã đăng ký và có thể đăng nhập'
                   );
                   res.redirect('/users/sign-in');
                 })
@@ -91,8 +95,8 @@ const { ensureAuthenticatedUser, forwardAuthenticatedUser } = require('../config
   router.get('/log-out', (req, res) => {
     req.logout(function(err) {
       if (!err) {
-        req.flash('success_msg', 'You are logged out');
-        res.redirect('/users/sign-in');
+        //req.flash('success_msg', 'You are logged out');
+        res.redirect('/');
       }
     });
     

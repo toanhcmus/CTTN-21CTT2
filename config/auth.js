@@ -7,7 +7,7 @@ module.exports = {
             return next();
         }
       }
-      req.flash('error_msg', 'Please log in to view that resource');
+      req.flash('error_msg', 'Vui lòng đăng nhập!');
       res.redirect('/users/sign-in');
     },
     forwardAuthenticatedUser: function(req, res, next) {
@@ -28,7 +28,7 @@ module.exports = {
       {
         res.render('admin/dashboard');
       } else {
-        req.flash('error_msg', 'You are not admin');
+        req.flash('error_msg', 'Bạn không phải là admin!');
         res.redirect('/users/log-out'); 
       }
     },
@@ -40,7 +40,7 @@ module.exports = {
             return next();
         }
       }
-      req.flash('error_msg', 'You are not admin');
+      req.flash('error_msg', 'Bạn không phải là admin!');
       res.redirect('/admin/sign-in');
     }
   };
