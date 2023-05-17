@@ -5,6 +5,7 @@ const bcrypt = require('bcryptjs');
 const passport = require('passport');
 const User = require('../models/User');
 const Book = require('../models/Book');
+
 const { ensureAuthenticatedUser, forwardAuthenticatedUser } = require('../config/auth');
 
   //GET SIGN-IN PAGE
@@ -113,6 +114,17 @@ const { ensureAuthenticatedUser, forwardAuthenticatedUser } = require('../config
       statusBook: "False"
     });
 
+    const id = req.user._id;
+
+    User.findById(id)
+    .then(function (foundUser) {
+      foundUser.books++;
+      foundUser.save();
+    })
+    .catch(function (err) {
+      console.log(err);
+    });
+
     Book.create(addedBook)
     .then(function () {
       //console.log("Successfully saved book to DB");
@@ -124,9 +136,9 @@ const { ensureAuthenticatedUser, forwardAuthenticatedUser } = require('../config
   });
 
   //DASHBOARD
-  router.get('/dashboard', ensureAuthenticatedUser, function(req, res) {
+  router.get('/dashboard', ensureAuthenticatedUser, (req, res) => {
     const user = req.user;
-    console.log(user);
+    //console.log(user);
     Book.find({userID: user.username})
     .then(function (foundBooks) {
           res.render("student/dashboard", {foundUser: user, foundBooks: foundBooks});

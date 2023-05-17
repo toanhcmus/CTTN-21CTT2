@@ -1,0 +1,59 @@
+<%- include('../header') -%>
+  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    <ul class="navbar-nav ms-auto">
+        <div class="dropdown">
+          <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fa-regular fa-user fa-lg"></i> Admin
+          </button>
+  
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/admin/dashboard">Dashboard</a></li>
+            <li><a class="dropdown-item" href="/admin/log-out">Đăng xuất</a></li>
+          </ul>
+        </div>
+    </ul>
+  </div>
+  </nav>
+</header>
+  <!-- DANH SÁCH TÀI LIỆU ĐÃ TẢI LÊN -->
+  <div class="card border-primary mb-3 info-card">
+    <div class="card-header text-center"><strong>DANH SÁCH SINH VIÊN ĐÃ THAM GIA</strong></div>
+    <div class="card-body text-primary">
+        <div class="table-responsive">
+        <table class="table table-bordered border-dark-subtle rounded">
+             <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">MSSV</th>
+                  <th scope="col">HỌ TÊN</th>
+                  <th scope="col">SỐ LƯỢNG SÁCH ĐÃ TẢI LÊN</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% 
+                    let count = 0;
+                    
+                    foundUsers.forEach(function(user){ 
+                        count = count + 1;
+                %>
+                <tr>
+                    <th scope="row"><%= count %></th>
+                    <td><%= user.username %></td>
+                    <td><%= user.fullName %></td>
+                    <td><%= user.books %></td>
+                </tr>
+                <% }); %>
+              </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+  <script src="index.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" 
+  integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+
+</body>
+
+</html>

@@ -81,6 +81,19 @@ const {ensureAuthenticatedAdmin, forwardAuthenticatedAdmin } = require('../confi
     }); 
   });
 
+  //DASHBOARD-USERS-BOOKS
+  router.get('/dashboard-users', ensureAuthenticatedAdmin, function(req, res) {
+    User.find({})
+    .then(function (foundUsers) {
+      if (foundUsers) 
+        res.render("admin/dashboard-users", {foundUsers: foundUsers});
+      })
+    .catch(function (err) {
+      res.redirect("/admin/sign-in");
+      console.log(err);
+    }); 
+  });
+
   //VERIFY BOOK
   router.post('/verifyBook/:id', ensureAuthenticatedAdmin, function(req, res) {
     const id = req.params.id;
