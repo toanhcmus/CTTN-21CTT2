@@ -19,7 +19,7 @@
   let options = {
     from: "cttn-21ctt2@outlook.com",
     to: "",
-    subject: "[CTTN-21CTT2] - Xác nhận tài liệu đã được duyệt",
+    subject: "",
     html: ""
   };
 
@@ -121,19 +121,20 @@
       Book.findById(id)
       .then(function (foundBook) {
         user = foundBook.userID;
-        console.log("id: "+ user);
+        //console.log("id: "+ user);
 
         foundBook.statusBook = 'True';
         foundBook.save();
         options.to = foundBook.userID + "@student.hcmus.edu.vn";
+        options.subject = "[CTTN-21CTT2] - XÁC NHẬN TÀI LIỆU CỦA BẠN ĐÃ ĐƯỢC DUYỆT";
         let content = `
         <h1>TÀI LIỆU CỦA BẠN ĐÃ ĐƯỢC DUYỆT</h1>
         <ul>
         <li><strong>Tên tài liệu: </strong> ${foundBook.title}</li>
-        <li><strong>Liên kết:</strong> <a href=${foundBook.link} target="_blank">đường dẫn đến tài liệu</a></li>
+        <li><strong>Liên kết:</strong> <a href=${foundBook.link} target="_blank">tài liệu</a></li>
         </ul>
         
-        <strong>CẢM ƠN CÁC BẠN ĐÃ ĐÓNG GÓP TÀI LIỆU ĐỂ CÔNG TRÌNH THANH NIÊN ĐƯỢC THÀNH CÔNG</strong>
+        <strong>CẢM ƠN BẠN ĐÃ ĐÓNG GÓP TÀI LIỆU ĐỂ CÔNG TRÌNH THANH NIÊN ĐƯỢC THÀNH CÔNG!</strong>
         `
         options.html = content;
 
@@ -147,7 +148,7 @@
 
         User.findOne({username: user})
         .then(function (foundUser) {
-          console.log(foundUser);
+          //console.log(foundUser);
           foundUser.books++;
           foundUser.save();
           res.redirect("/admin/dashboard");
@@ -162,8 +163,36 @@
 router.post('/deleteBook/:id', ensureAuthenticatedAdmin, function(req, res) {
   const id = req.params.id;
   Book.findByIdAndRemove(id)
-  .then(function () {
+  .then(function (foundBook) {
     //console.log("Successfully deleted book");
+        //console.log(foundBook);
+        options.to = foundBook.userID + "@student.hcmus.edu.vn";
+        options.subject = "[CTTN-21CTT2] - XÁC NHẬN TÀI LIỆU CỦA BẠN KHÔNG ĐƯỢC DUYỆT";
+        let content = `
+        <h1>TÀI LIỆU CỦA BẠN KHÔNG ĐƯỢC DUYỆT</h1>
+        <ul>
+        <li><strong>Tên tài liệu: </strong> ${foundBook.title}</li>
+        <li><strong>Liên kết:</strong> <a href=${foundBook.link} target="_blank">tài liệu</a></li>
+        </ul>
+        <p>Tài liệu không được duyệt có thể vì: 
+        <ul>
+          <li>Tài liệu trong link và tên tài liệu không đúng.</li>
+          <li>Liên kết yêu cầu quyền truy cập.</li>
+          <li>Liên kết bị hỏng.</li>
+          <li>Và nhiều vấn đề khác.</li>
+        </ul>
+        </p>
+        <strong>BẠN UPLOAD LẠI TÀI LIỆU MỚI GIÚP MÌNH NHÉ! CẢM ƠN BẠN ĐÃ ĐÓNG GÓP TÀI LIỆU ĐỂ CÔNG TRÌNH THANH NIÊN ĐƯỢC THÀNH CÔNG!</strong>
+        `
+        options.html = content;
+
+        transporter.sendMail(options, (err, info) => {
+          if (err) {
+            //console.log(err);
+          } else {
+            //console("Sent: " + info.response);
+          }
+        })
     res.redirect("/admin/dashboard");
   })
   .catch(function (err) {
