@@ -1,6 +1,6 @@
 module.exports = {
     ensureAuthenticatedUser: function(req, res, next) {
-      console.log(req.user);
+      //console.log(req.user);
       if (req.user === undefined)
       {
           req.flash('error_msg', 'Vui lòng đăng nhập!');
@@ -41,14 +41,20 @@ module.exports = {
       }
     },
     ensureAuthenticatedAdmin: function(req, res, next) {
-      const checkAdmin = req.user.admin;
+      if (req.user === undefined)
+      {
+          req.flash('error_msg', 'Vui lòng đăng nhập!');
+          res.redirect('/users/sign-in');
+      } else {
+        const checkAdmin = req.user.admin;
 
-      if (req.isAuthenticated()) {
-        if (checkAdmin === true) {
-            return next();
+        if (req.isAuthenticated()) {
+          if (checkAdmin === true) {
+              return next();
+          }
         }
+        req.flash('error_msg', 'Bạn không phải là admin!');
+        res.redirect('/admin/sign-in');
       }
-      req.flash('error_msg', 'Bạn không phải là admin!');
-      res.redirect('/admin/sign-in');
     }
   };

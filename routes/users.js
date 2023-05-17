@@ -75,7 +75,7 @@ const { ensureAuthenticatedUser, forwardAuthenticatedUser } = require('../config
                   );
                   res.redirect('/users/sign-in');
                 })
-                .catch(err => res.status(400).send(err));
+                .catch(err => res.render("400"));
             });
           });
         }
@@ -105,34 +105,23 @@ const { ensureAuthenticatedUser, forwardAuthenticatedUser } = require('../config
 
   //ADD BOOK
   router.post('/addBook', ensureAuthenticatedUser, function(req, res) {
-    const addedBook = new Book({
-      userID: req.user.username,
-      title: req.body.title,
-      link: req.body.link,
-      type: req.body.type,
-      category: req.body.cate,
-      statusBook: "False"
-    });
+      const addedBook = new Book({
+        userID: req.user.username,
+        title: req.body.title,
+        link: req.body.link,
+        type: req.body.type,
+        category: req.body.cate,
+        statusBook: "False"
+      });
 
-    const id = req.user._id;
-
-    User.findById(id)
-    .then(function (foundUser) {
-      foundUser.books++;
-      foundUser.save();
-    })
-    .catch(function (err) {
-      console.log(err);
-    });
-
-    Book.create(addedBook)
-    .then(function () {
-      //console.log("Successfully saved book to DB");
-      res.redirect("/users/dashboard");
-    })
-    .catch(function (err) {
-      res.status(400).send(err);
-    });
+      Book.create(addedBook)
+      .then(function () {
+        //console.log("Successfully saved book to DB");
+        res.redirect("/users/dashboard");
+      })
+      .catch(function (err) {
+        res.render("400");
+      });
   });
 
   //DASHBOARD
@@ -148,7 +137,7 @@ const { ensureAuthenticatedUser, forwardAuthenticatedUser } = require('../config
           res.render("student/dashboard", {foundUser: user, foundBooks: foundBooks});
     })
     .catch(function (err) {
-      res.status(400).send(err);
+      res.render("400");
     });
   });
 

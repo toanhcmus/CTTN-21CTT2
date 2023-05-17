@@ -1,11 +1,28 @@
-require('dotenv').config();
-const express = require('express');
-const router = express.Router();
-const bcrypt = require('bcryptjs');
-const passport = require('passport');
-const User = require('../models/User');
-const Book = require('../models/Book');
-const {ensureAuthenticatedAdmin, forwardAuthenticatedAdmin } = require('../config/auth');
+  require('dotenv').config();
+  const express = require('express');
+  const router = express.Router();
+  const bcrypt = require('bcryptjs');
+  const passport = require('passport');
+  const User = require('../models/User');
+  const Book = require('../models/Book');
+  const nodeMailer = require('nodemailer');
+  const {ensureAuthenticatedAdmin, forwardAuthenticatedAdmin } = require('../config/auth');
+
+  const transporter = nodeMailer.createTransport({
+    service: "hotmail",
+    auth: {
+      user: "cttn-21ctt2@outlook.com",
+      pass: process.env.EMAIL_PW
+    }
+  });
+
+  let options = {
+    from: "cttn-21ctt2@outlook.com",
+    to: "",
+    subject: "[CTTN-21CTT2] - Xác nhận tài liệu đã được duyệt",
+    html: ""
+  };
+
 
   //GET SIGN-IN PAGE
   router.get('/sign-in', forwardAuthenticatedAdmin, (req, res) => res.render('admin/sign-in'));
@@ -32,7 +49,7 @@ const {ensureAuthenticatedAdmin, forwardAuthenticatedAdmin } = require('../confi
             );
             res.redirect('/admin/sign-in');
           })
-          .catch(err => console.log(err));
+          .catch(err => res.render("400"));
       });
     });
   });
@@ -94,20 +111,51 @@ const {ensureAuthenticatedAdmin, forwardAuthenticatedAdmin } = require('../confi
     }); 
   });
 
+  let user = "";
+
   //VERIFY BOOK
   router.post('/verifyBook/:id', ensureAuthenticatedAdmin, function(req, res) {
-    const id = req.params.id;
-    console.log("/verifyBook/" + id);
+      const id = req.params.id;
+      console.log("/verifyBook/" + id);
 
-    Book.findById(id)
-    .then(function (foundBook) {
-      foundBook.statusBook = 'True';
-      foundBook.save();
-      res.redirect("/admin/dashboard");
-    })
-    .catch(function (err) {
-      console.log(err);
-    });
+      Book.findById(id)
+      .then(function (foundBook) {
+        user = foundBook.userID;
+        console.log("id: "+ user);
+
+        foundBook.statusBook = 'True';
+        foundBook.save();
+        options.to = foundBook.userID + "@student.hcmus.edu.vn";
+        let content = `
+        <h1>TÀI LIỆU CỦA BẠN ĐÃ ĐƯỢC DUYỆT</h1>
+        <ul>
+        <li><strong>Tên tài liệu: </strong> ${foundBook.title}</li>
+        <li><strong>Liên kết:</strong> <a href=${foundBook.link} target="_blank">đường dẫn đến tài liệu</a></li>
+        </ul>
+        
+        <strong>CẢM ƠN CÁC BẠN ĐÃ ĐÓNG GÓP TÀI LIỆU ĐỂ CÔNG TRÌNH THANH NIÊN ĐƯỢC THÀNH CÔNG</strong>
+        `
+        options.html = content;
+
+        transporter.sendMail(options, (err, info) => {
+          if (err) {
+            //console.log(err);
+          } else {
+            //console("Sent: " + info.response);
+          }
+        })
+
+        User.findOne({username: user})
+        .then(function (foundUser) {
+          console.log(foundUser);
+          foundUser.books++;
+          foundUser.save();
+          res.redirect("/admin/dashboard");
+        })
+      })
+      .catch(function (err) {
+        res.render("400");
+      });
   });
 
 //DELETE BOOK
@@ -119,7 +167,7 @@ router.post('/deleteBook/:id', ensureAuthenticatedAdmin, function(req, res) {
     res.redirect("/admin/dashboard");
   })
   .catch(function (err) {
-    console.log(err);
+    res.render("400");
   });
 });
   module.exports = router;
