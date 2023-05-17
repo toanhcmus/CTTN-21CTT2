@@ -1,14 +1,22 @@
 module.exports = {
     ensureAuthenticatedUser: function(req, res, next) {
-      const checkAdmin = req.user.admin;
-
-      if (req.isAuthenticated()) {
-        if (checkAdmin === false) {
-            return next();
+      console.log(req.user);
+      if (req.user === undefined)
+      {
+          req.flash('error_msg', 'Vui lòng đăng nhập!');
+          res.redirect('/users/sign-in');
+      } else 
+      {
+        const checkAdmin = req.user.admin;
+        if (req.isAuthenticated()) {
+          if (checkAdmin === false) {
+              return next();
+          }
         }
+        req.flash('error_msg', 'Vui lòng đăng nhập!');
+        res.redirect('/users/sign-in');
       }
-      req.flash('error_msg', 'Vui lòng đăng nhập!');
-      res.redirect('/users/sign-in');
+      
     },
     forwardAuthenticatedUser: function(req, res, next) {
       if (!req.isAuthenticated()) {

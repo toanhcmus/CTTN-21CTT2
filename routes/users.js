@@ -139,6 +139,10 @@ const { ensureAuthenticatedUser, forwardAuthenticatedUser } = require('../config
   router.get('/dashboard', ensureAuthenticatedUser, (req, res) => {
     const user = req.user;
     //console.log(user);
+    if (user === undefined)
+    {
+      res.redirect("/users/sign-in");
+    }
     Book.find({userID: user.username})
     .then(function (foundBooks) {
           res.render("student/dashboard", {foundUser: user, foundBooks: foundBooks});
